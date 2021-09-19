@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, Divider, Grid, Input, Paper, Stack, TextareaAutosize, Typography } from '@mui/material';
+import { Avatar, Button, Card, Container, Divider, Grid, Input, Paper, Stack, TextareaAutosize, Typography, Box } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 import HomeIcon from '@mui/icons-material/Home';
 import CakeIcon from '@mui/icons-material/Cake';
@@ -8,8 +8,8 @@ import './Feed.css';
 
 const Feed = () => {
     return (
-        <main className="feed">
-            <aside className="profile">
+        <Container component="main" className="feed">
+            <Box component="aside" className="profile">
                 <Card className="profile-card">
                     <Typography sx={{ maxWidth: '100%' }} variant="h6">Georgi Palovaki</Typography>
                     <Avatar className="profile-card-avatar">G</Avatar>
@@ -26,8 +26,8 @@ const Feed = () => {
                         </Typography>
                     </div>
                 </Card>
-            </aside>
-            <section className="news">
+            </Box>
+            <Box component="section" className="news">
                 <Paper className="news-post">
                     <Typography variant="body1">Status:</Typography>
                     <TextareaAutosize
@@ -60,7 +60,7 @@ const Feed = () => {
                             alt="forest"
                         />
                         <Typography className="news-card-likes" variant="h6">
-                            <FavoriteBorderIcon  /> 45 likes
+                            <FavoriteBorderIcon /> 45 likes
                             <ChatBubbleOutlineTwoToneIcon sx={{ marginLeft: '2rem' }} /> 10 comments
                         </Typography>
                         <Stack direction="row" spacing={1}>
@@ -70,11 +70,11 @@ const Feed = () => {
                     </Grid>
 
                 </Grid>
-            </section>
-            <aside className="events">
-                <p>adsdsads</p>
-            </aside>
-        </main>
+            </Box>
+            <Box component="aside" className="events">
+                <Typography paragraph>adsdsads</Typography>
+            </Box>
+        </Container>
     );
 };
 

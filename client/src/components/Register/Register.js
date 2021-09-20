@@ -1,6 +1,6 @@
 import { Container, Box, Paper, Avatar, Typography, TextField, Button, Grid } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import ErrorBox from "../Notifications/ErrorBox";
 import { registerUser, removeError } from "../../features/user/userSlice";

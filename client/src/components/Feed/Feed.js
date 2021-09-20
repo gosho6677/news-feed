@@ -1,7 +1,7 @@
 import { Avatar, Button, Card, Container, Divider, Grid, Input, Paper, Stack, TextareaAutosize, Typography, Box } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
-import HomeIcon from '@mui/icons-material/Home';
-import CakeIcon from '@mui/icons-material/Cake';
+// import HomeIcon from '@mui/icons-material/Home';
+// import CakeIcon from '@mui/icons-material/Cake';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ChatBubbleOutlineTwoToneIcon from '@mui/icons-material/ChatBubbleOutlineTwoTone';
 import './Feed.css';
@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 
 const Feed = () => {
     const user = useSelector(state => state.user.user);
-
+    
     return (
         <Container component="main" className="feed">
             <Box component="aside" className="profile">

@@ -5,6 +5,8 @@ import {
     signInWithEmailAndPassword,
     updateProfile,
     signOut,
+    setPersistence,
+    inMemoryPersistence
 } from "firebase/auth";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -25,6 +27,8 @@ const firebase = {
     login: signInWithEmailAndPassword,
     register: createUserWithEmailAndPassword,
     logout: signOut,
+    setPersistence,
+    inMemoryPersistence,
     updateProfile,
     app,
 };

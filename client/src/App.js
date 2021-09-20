@@ -10,7 +10,6 @@ import { Counter } from './features/counter/Counter';
 import { useEffect } from 'react';
 import { auth } from './firebase';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUserOnLoad } from './features/user/userSlice';
 
 const App = () => {
     const location = useLocation();
@@ -25,15 +24,6 @@ const App = () => {
                 history.push('/');
             }
 
-            // change it to different method because it causes unnecessary dispatches...
-            if (userCredential && !user) {
-                dispatch(setUserOnLoad({
-                    accessToken: userCredential.accessToken,
-                    displayName: userCredential.displayName,
-                    userEmail: userCredential.email,
-                    photoURL: userCredential.photoURL,
-                }));
-            }
             return;
         });
     }, [location, history, dispatch, user]);

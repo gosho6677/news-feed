@@ -39,8 +39,7 @@ const Navigation = () => {
                         </Typography>
                         {user
                             ? <>
-                                <Button color="inherit"><NavLink className="nav-links" to="/"> Welcome, {user.displayName} </NavLink></Button>
-                                <Button color="inherit"><NavLink className="nav-links" to="/auth/register"> Create Post </NavLink></Button>
+                                <Button color="inherit"><NavLink className="nav-links" to="/"> Welcome, {user.displayName} !</NavLink></Button>
                                 <Button color="inherit" onClick={logoutHandler}><NavLink className="nav-links" to="/"> Logout </NavLink></Button>
                             </>
                             : <>

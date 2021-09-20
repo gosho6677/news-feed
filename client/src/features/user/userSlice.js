@@ -38,10 +38,6 @@ export const userSlice = createSlice({
         removeError: state => {
             state.status = 'idle';
             state.error = '';
-        },
-        setUserOnLoad: (state, action) => {
-            state.status = 'idle';
-            state.user = action.payload;
         }
     },
     extraReducers: builder => {

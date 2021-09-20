@@ -1,10 +1,36 @@
 import { Container, Box, Paper, Avatar, Typography, TextField, Button, Grid } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import ErrorBox from "../Notifications/ErrorBox";
+import { registerUser, removeError } from "../../features/user/userSlice";
 
 const Register = () => {
+    const status = useSelector(state => state.user.status);
+    const error = useSelector(state => state.user.error);
+    const dispatch = useDispatch();
+
+    const registerHandler = e => {
+        e.preventDefault();
+
+        const email = e.target.email.value;
+        const name = e.target.name.value;
+        const password = e.target.password.value;
+        const rePass = e.target.rePass.value;
+        const photoUrl = e.target.photoUrl.value;
+
+        dispatch(registerUser({
+            email,
+            name,
+            password,
+            rePass,
+            photoUrl
+        }));
+    };
+
     return (
         <Container component="main" sx={{ width: "50%" }}>
+            {status === 'error' && <ErrorBox error={error} removeError={removeError} />}
             <Paper elevation={6} sx={{
                 display: 'flex',
                 justifyContent: 'center',
@@ -27,7 +53,7 @@ const Register = () => {
                     <Typography component="h1" variant="h5">
                         Sign up
                     </Typography>
-                    <Box component="form" noValidate sx={{ mt: 1 }}>
+                    <Box component="form" onSubmit={registerHandler} noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
                             required
@@ -46,6 +72,14 @@ const Register = () => {
                             name="name"
                         />
                         <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="photo"
+                            label="Photo URL"
+                            name="photoUrl"
+                        />
+                        {/* <TextField
                             id="date"
                             margin="normal"
                             label="Birthday"
@@ -56,7 +90,7 @@ const Register = () => {
                             InputLabelProps={{
                                 shrink: true,
                             }}
-                        />
+                        /> */}
                         <TextField
                             margin="normal"
                             required
@@ -77,7 +111,7 @@ const Register = () => {
                             id="rePass"
                             autoComplete="current-password"
                         />
-                        <TextField
+                        {/* <TextField
                             margin="normal"
                             fullWidth
                             id="jobDescription"
@@ -90,7 +124,7 @@ const Register = () => {
                             id="homeLocation"
                             label="Home Location e.g. Sofia, Bulgaria"
                             name="homeLocation"
-                        />
+                        /> */}
                         <Button
                             type="submit"
                             fullWidth

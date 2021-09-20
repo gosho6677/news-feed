@@ -9,8 +9,17 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 
 import './Navigation.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutUser } from '../../features/user/userSlice';
 
 const Navigation = () => {
+    const user = useSelector(state => state.user.user);
+    const dispatch = useDispatch();
+    
+    const logoutHandler = () => {
+        dispatch(logoutUser());
+    };
+
     return (
         <header>
             <Box sx={{ flexGrow: 1 }}>
@@ -28,8 +37,17 @@ const Navigation = () => {
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                             <NavLink className="nav-links" to="/">News Feed</NavLink>
                         </Typography>
-                        <Button color="inherit"><NavLink className="nav-links" to="/auth/login"> Login </NavLink></Button>
-                        <Button color="inherit"><NavLink className="nav-links" to="/auth/register"> Register </NavLink></Button>
+                        {user
+                            ? <>
+                                <Button color="inherit"><NavLink className="nav-links" to="/"> Welcome, {user.displayName} </NavLink></Button>
+                                <Button color="inherit"><NavLink className="nav-links" to="/auth/register"> Create Post </NavLink></Button>
+                                <Button color="inherit" onClick={logoutHandler}><NavLink className="nav-links" to="/"> Logout </NavLink></Button>
+                            </>
+                            : <>
+                                <Button color="inherit"><NavLink className="nav-links" to="/auth/login"> Login </NavLink></Button>
+                                <Button color="inherit"><NavLink className="nav-links" to="/auth/register"> Register </NavLink></Button>
+                            </>
+                        }
                     </Toolbar>
                 </AppBar>
             </Box>

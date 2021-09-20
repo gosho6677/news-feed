@@ -5,24 +5,22 @@ import CakeIcon from '@mui/icons-material/Cake';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ChatBubbleOutlineTwoToneIcon from '@mui/icons-material/ChatBubbleOutlineTwoTone';
 import './Feed.css';
+import { useSelector } from 'react-redux';
+
 
 const Feed = () => {
+    const user = useSelector(state => state.user.user);
+
     return (
         <Container component="main" className="feed">
             <Box component="aside" className="profile">
                 <Card className="profile-card">
-                    <Typography sx={{ maxWidth: '100%' }} variant="h6">Georgi Palovaki</Typography>
-                    <Avatar className="profile-card-avatar">G</Avatar>
+                    <Typography sx={{ maxWidth: '100%' }} variant="h6">{user?.displayName}</Typography>
+                    <Avatar className="profile-card-avatar">{user?.displayName.slice(0,1)}</Avatar>
                     <Divider className="profile-divider" />
                     <div className="profile-card-user">
                         <Typography className="profile-card-user-p" variant="body1">
-                            <CreateIcon /> Web Developer
-                        </Typography>
-                        <Typography className="profile-card-user-p" variant="body1">
-                            <HomeIcon /> Petrich, Bulgaria
-                        </Typography>
-                        <Typography className="profile-card-user-p" variant="body1">
-                            <CakeIcon /> 19.03.1997
+                            <CreateIcon /> {user?.userEmail}
                         </Typography>
                     </div>
                 </Card>

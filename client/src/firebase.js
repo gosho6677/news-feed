@@ -23,6 +23,17 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth();
 
+const getToken = async () => {
+    try {
+        if(auth.currentUser) {
+            const token = await auth.currentUser.getIdToken(true);
+            return token;
+        }
+    } catch (err) {
+        console.error(err);
+    }
+};
+
 const firebase = {
     login: signInWithEmailAndPassword,
     register: createUserWithEmailAndPassword,
@@ -30,6 +41,7 @@ const firebase = {
     setPersistence,
     inMemoryPersistence,
     updateProfile,
+    getToken,
     app,
 };
 

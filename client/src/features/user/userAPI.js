@@ -17,7 +17,6 @@ export const register = async ({ email, name, password, rePass, photoUrl }) => {
     const userCredential = auth.currentUser;
 
     return {
-        accessToken: userCredential.accessToken,
         displayName: userCredential.displayName,
         userEmail: userCredential.email,
         photoURL: userCredential.photoURL,
@@ -30,7 +29,6 @@ export const login = async ({ email, password }) => {
     const userCredential = await firebase.login(auth, email, password);
 
     return {
-        accessToken: userCredential.user.accessToken,
         displayName: userCredential.user.displayName,
         userEmail: userCredential.user.email,
         photoURL: userCredential.user.photoURL,

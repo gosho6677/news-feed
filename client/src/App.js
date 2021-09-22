@@ -10,6 +10,7 @@ import { Counter } from './features/counter/Counter';
 import { useEffect } from 'react';
 import { auth } from './firebase';
 import { useDispatch, useSelector } from 'react-redux';
+import MyProfile from './components/MyProfile/MyProfile';
 
 const App = () => {
     const location = useLocation();
@@ -22,6 +23,8 @@ const App = () => {
         auth.onAuthStateChanged(userCredential => {
             if (userCredential && (location.pathname === '/auth/register' || location.pathname === '/auth/login')) {
                 history.push('/');
+            } else if (!userCredential && location.pathname === '/') {
+                history.push('/auth/login');
             }
 
             return;
@@ -34,6 +37,7 @@ const App = () => {
             <Navigation />
             <Switch>
                 <Route path='/' exact component={Feed} />
+                <Route path='/profile' exact component={MyProfile} />
                 <Route path='/auth/login' exact component={Login} />
                 <Route path='/auth/register' exact component={Register} />
                 <Route path='/test' exact component={Counter} />

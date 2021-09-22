@@ -1,9 +1,9 @@
 const { Schema, model } = require('mongoose');
 
 const schema = new Schema({
-    description: { type: String, required: true },
+    content: { type: String, required: true },
     iat: { type: Date, required: true },
-    owner: { type: Schema.Types.ObjectId, ref: 'User' },
+    owner: { type: Object, required: true },
 });
 
 module.exports = model('Comment', schema);

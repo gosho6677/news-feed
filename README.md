@@ -1,5 +1,4 @@
-# FE
-
+# TODO List
 - [x] Login page
 - [x] Register page
 - [x] Home page
@@ -7,9 +6,13 @@
 - [x] avatar picture
 - [x] add firebase admin sdk BE
 - [x] get posts functionality BE/FE
+- [x] adjust statuses to be succeeded when fulfilled
+- [x] fetch data only when status is 'idle' (empty)
+- [x] add is guest route guard
 - [ ] create posts BE/FE
 - [ ] delete posts if owner BE/FE
 - [ ] like posts BE/FE
 - [ ] add comment section with material ui to posts
 - [ ] comment posts BE/FE
 - [ ] my posts page
+- [ ] try optimizing by normalizing data with createEntityAdapter e.g. as key,value pairs

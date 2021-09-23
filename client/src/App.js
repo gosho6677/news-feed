@@ -1,16 +1,19 @@
 import { CssBaseline } from '@mui/material';
 import { StyledEngineProvider } from '@mui/material/styles';
 import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
-import Feed from './components/Feed/Feed';
-import Navigation from './components/Navigation/Navigation';
 import './App.css';
-import Login from './components/Login/Login';
-import Register from './components/Register/Register';
+
 import { Counter } from './features/counter/Counter';
 import { useEffect } from 'react';
 import { auth } from './firebase';
 import { useDispatch, useSelector } from 'react-redux';
+
 import MyProfile from './components/MyProfile/MyProfile';
+import Feed from './components/Feed/Feed';
+import Navigation from './components/Navigation/Navigation';
+import Login from './components/Login/Login';
+import Register from './components/Register/Register';
+import isGuest from './guards/isGuest';
 
 const App = () => {
     const location = useLocation();
@@ -36,8 +39,8 @@ const App = () => {
             <CssBaseline />
             <Navigation />
             <Switch>
-                <Route path='/' exact component={Feed} />
-                <Route path='/profile' exact component={MyProfile} />
+                <Route path='/' exact component={isGuest(Feed)} />
+                <Route path='/profile' exact component={isGuest(MyProfile)} />
                 <Route path='/auth/login' exact component={Login} />
                 <Route path='/auth/register' exact component={Register} />
                 <Route path='/test' exact component={Counter} />

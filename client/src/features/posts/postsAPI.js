@@ -12,7 +12,7 @@ export const getPosts = async () => {
     return await resp.json();
 };
 
-export const createPost = async (content, imageUrl, ownerId) => {
+export const createPost = async ({ content, imageUrl, ownerId }) => {
     const resp = await fetch(baseUrl, {
         method: 'POST',
         headers: {

@@ -1,4 +1,6 @@
-import { Typography, Box, Container } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 
 import Profile from './Profile';
 import News from './News';
@@ -14,8 +16,10 @@ const Feed = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getPostsThunk());
-    }, [dispatch]);
+        if(status === 'idle') {
+            dispatch(getPostsThunk());
+        }
+    }, [dispatch, status]);
 
     if(status === 'loading') {
         return <LoadingBar />;

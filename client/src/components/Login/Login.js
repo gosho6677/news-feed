@@ -1,6 +1,6 @@
 import { Container, Box, Paper, Avatar, Typography, TextField, Button, Grid } from "@mui/material";
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Link } from 'react-router-dom';
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser, removeError } from "../../features/user/userSlice";
 import ErrorBox from "../Notifications/ErrorBox";
@@ -22,10 +22,10 @@ const Login = () => {
 
     return (
         <Container component="main" sx={{ width: "50%" }}>
-            {status === 'error' && <ErrorBox error={error} removeError={removeError} />}
+            {status === "error" && <ErrorBox error={error} removeError={removeError} />}
             <Paper elevation={6} sx={{
-                display: 'flex',
-                justifyContent: 'center',
+                display: "flex",
+                justifyContent: "center",
                 marginTop: 1,
             }}>
                 <Box
@@ -33,13 +33,13 @@ const Login = () => {
                         // marginTop: 5,
                         p: 4,
                         // p: "1rem 5rem",
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        maxWidth: '600px',
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        maxWidth: "600px",
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                    <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">

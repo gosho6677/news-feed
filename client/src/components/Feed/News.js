@@ -1,28 +1,27 @@
-import { Button, Grid, Input, Paper, TextareaAutosize, Typography, Box } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import CreatePost from './CreatePost';
 
 import NewsCard from './NewsCard';
+import { useSelector } from 'react-redux';
+import { selectUserId } from '../../features/user/userSlice';
 
 const News = ({ posts }) => {
+    const userId = useSelector(selectUserId);
 
     return (
         <Box component="section" className="news">
-            <Paper className="news-post">
-                <Typography variant="body1">Status:</Typography>
-                <TextareaAutosize
-                    id="outlined-basic"
-                    className="news-post-desc"
-                    label="Outlined"
-                    variant="outlined"
-                />
-                <div className="news-inputs">
-                    <Input className="news-post-imgUrl" placeholder="Image URL" />
-                    <Button variant="contained" className="news-post-btn">POST</Button>
-                </div>
-            </Paper>
-
-            <Grid className="news-cards-container" container direction="column">
-                {posts?.length 
-                    ? posts.map(p => <NewsCard key={p._id} post={p} />)
+            <CreatePost />
+            <Grid
+                // finish delete request via event delegation
+                onClick={e => console.log(e.target)}
+                className="news-cards-container"
+                direction="column"
+                container
+            >
+                {posts?.length
+                    ? posts.map(p => <NewsCard key={p._id} post={p} userId={userId} />)
                     : <Typography variant="h2">No posts available at this moment...</Typography>
                 }
             </Grid>

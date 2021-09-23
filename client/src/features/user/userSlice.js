@@ -46,7 +46,7 @@ export const userSlice = createSlice({
                 state.status = 'loading';
             })
             .addCase(registerUser.fulfilled, (state, action) => {
-                state.status = 'idle';
+                state.status = 'succeeded';
                 state.user = action.payload;
             })
             .addCase(registerUser.rejected, (state, action) => {
@@ -59,7 +59,7 @@ export const userSlice = createSlice({
                 state.status = 'loading';
             })
             .addCase(loginUser.fulfilled, (state, action) => {
-                state.status = 'idle';
+                state.status = 'succeeded';
                 state.user = action.payload;
             })
             .addCase(loginUser.rejected, (state, action) => {
@@ -76,6 +76,12 @@ export const userSlice = createSlice({
             });
     }
 });
+
+export const selectUserId = state => {
+    return state.user.status === 'succeeded'
+        ? state.user.user._id
+        : undefined;
+};
 
 export const { removeError, setUserOnLoad } = userSlice.actions;
 export default userSlice.reducer;

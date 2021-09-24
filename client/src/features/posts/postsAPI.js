@@ -24,3 +24,36 @@ export const createPost = async ({ content, imageUrl, ownerId }) => {
 
     return await resp.json();
 };
+
+export const deletePost = async (postId) => {
+    const resp = await fetch(`${baseUrl}/${postId}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': await firebase.getToken()
+        }
+    });
+
+    return await resp.json();
+};
+
+export const likePost = async (postId) => {
+    const resp = await fetch(`${baseUrl}/${postId}/like`, {
+        method: 'POST',
+        headers: {
+            'Authorization': await firebase.getToken()
+        }
+    });
+
+    return await resp.json();
+};
+
+export const dislikePost = async (postId) => {
+    const resp = await fetch(`${baseUrl}/${postId}/dislike`, {
+        method: 'POST',
+        headers: {
+            'Authorization': await firebase.getToken()
+        }
+    });
+
+    return await resp.json();
+};

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { createPost, getPosts } from './postsAPI';
+import { createPost, deletePost, dislikePost, getPosts, likePost } from './postsAPI';
 
 const initialState = {
     posts: [],
@@ -26,6 +26,41 @@ export const createPostThunk = createAsyncThunk(
             throw new Error(post.error);
         }
         return post;
+    }
+);
+
+export const deletePostThunk = createAsyncThunk(
+    'posts/delete',
+    async (postId) => {
+        const postResponse = await deletePost(postId);
+        if (!postResponse.ok) {
+            throw new Error(postResponse.error);
+        }
+        return postResponse._id;
+    }
+);
+
+export const likePostThunk = createAsyncThunk(
+    'posts/like',
+    async ({ postId, userId }) => {
+        const postResponse = await likePost(postId);
+        if (!postResponse.ok) {
+            throw new Error(postResponse.error);
+        }
+        postResponse.post.userId = userId;
+        return postResponse.post;
+    }
+);
+
+export const dislikePostThunk = createAsyncThunk(
+    'posts/dislike',
+    async ({ postId, userId }) => {
+        const postResponse = await dislikePost(postId);
+        if (!postResponse.ok) {
+            throw new Error(postResponse.error);
+        }
+        postResponse.post.userId = userId;
+        return postResponse.post;
     }
 );
 
@@ -58,6 +93,41 @@ export const postsSlice = createSlice({
                 state.posts.sort((a, b) => b.iat - a.iat);
             })
             .addCase(createPostThunk.rejected, (state, action) => {
+                state.status = 'error';
+                state.error = action.error.message || '';
+            });
+
+        builder
+            .addCase(deletePostThunk.pending, state => {
+                state.status = 'loading';
+            })
+            .addCase(deletePostThunk.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.posts = state.posts.filter(p => p._id !== action.payload);
+            })
+            .addCase(deletePostThunk.rejected, (state, action) => {
+                state.status = 'error';
+                state.error = action.error.message || '';
+            });
+
+        builder
+            .addCase(likePostThunk.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                const post = state.posts.find(p => p._id === action.payload._id);
+                post.likes.push(action.payload.userId);
+            })
+            .addCase(likePostThunk.rejected, (state, action) => {
+                state.status = 'error';
+                state.error = action.error.message || '';
+            });
+
+        builder
+            .addCase(dislikePostThunk.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                const post = state.posts.find(p => p._id === action.payload._id);
+                post.likes = post.likes.filter(p => p !== action.payload.userId);
+            })
+            .addCase(dislikePostThunk.rejected, (state, action) => {
                 state.status = 'error';
                 state.error = action.error.message || '';
             });

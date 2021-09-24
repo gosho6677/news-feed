@@ -26,4 +26,39 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.delete('/:postId', async (req, res) => {
+    try {
+        const postId = req.params.postId;
+        await req.data.deletePost(postId);
+
+        res.status(201).json({ ok: true, _id: postId });
+    } catch (err) {
+        res.status(400).json({ ok: false, error: err.message });
+    }
+});
+
+router.post('/:postId/like', async (req, res) => {
+    try {
+        const postId = req.params.postId;
+        const userId = req.user._id;
+        const post = await req.data.likePost(postId, userId);
+
+        res.status(201).json({ ok: true, post });
+    } catch (err) {
+        res.status(400).json({ ok: false, error: err.message });
+    }
+});
+
+router.post('/:postId/dislike', async (req, res) => {
+    try {
+        const postId = req.params.postId;
+        const userId = req.user._id;
+        const post = await req.data.dislikePost(postId, userId);
+
+        res.status(201).json({ ok: true, post });
+    } catch (err) {
+        res.status(400).json({ ok: false, error: err.message });
+    }
+});
+
 module.exports = router;

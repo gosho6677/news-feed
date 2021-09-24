@@ -9,9 +9,9 @@
 - [x] adjust statuses to be succeeded when fulfilled
 - [x] fetch data only when status is 'idle' (empty)
 - [x] add is guest route guard
-- [ ] create posts BE/FE
-- [ ] delete posts if owner BE/FE
-- [ ] like posts BE/FE
+- [x] create posts BE/FE
+- [x] delete posts if owner BE/FE
+- [x] like posts BE/FE
 - [ ] add comment section with material ui to posts
 - [ ] comment posts BE/FE
 - [ ] my posts page

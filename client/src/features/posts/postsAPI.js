@@ -57,3 +57,16 @@ export const dislikePost = async (postId) => {
 
     return await resp.json();
 };
+
+export const commentPost = async (postId, description) => {
+    const resp = await fetch(`${baseUrl}/${postId}/comment`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': await firebase.getToken()
+        },
+        body: JSON.stringify({ description })
+    });
+
+    return await resp.json();
+};

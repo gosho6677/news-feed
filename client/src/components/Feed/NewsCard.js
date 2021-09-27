@@ -7,14 +7,19 @@ import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 
+
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ChatBubbleOutlineTwoToneIcon from '@mui/icons-material/ChatBubbleOutlineTwoTone';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+
 import { useState } from 'react';
+import Comment from './Comment';
+import AddComment from './AddComment';
 
 const NewsCard = ({ post, userId }) => {
     const [likeDisabled, setLikeDisabled] = useState(false);
     const [dislikeDisabled, setDislikeDisabled] = useState(false);
+    const [display, setDisplay] = useState('none');
     const hasLiked = post.likes.includes(userId);
 
     return (
@@ -74,8 +79,20 @@ const NewsCard = ({ post, userId }) => {
                         Like
                     </Button>
                 }
-                <Button variant="contained" className="news-post-btn">Comment</Button>
+                <Button
+                    onClick={() => setDisplay(old => old === 'none' ? 'block' : 'none')}
+                    variant="contained"
+                    className="news-post-btn"
+                >
+                    Comments
+                </Button>
             </Stack>
+            <Grid display={display} sx={{ mt: '1rem' }} container>
+                <AddComment postId={post._id} />
+                {post.comments.length 
+                    ? post.comments.map(c => <Comment key={c._id} comment={c} />)
+                    : <Typography variant="h5">No comments yet...</Typography>}
+            </Grid>
         </Grid>
     );
 };

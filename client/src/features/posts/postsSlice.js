@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { createPost, deletePost, dislikePost, getPosts, likePost } from './postsAPI';
+import { commentPost, createPost, deletePost, dislikePost, getPosts, likePost } from './postsAPI';
 
 const initialState = {
     posts: [],
@@ -61,6 +61,18 @@ export const dislikePostThunk = createAsyncThunk(
         }
         postResponse.post.userId = userId;
         return postResponse.post;
+    }
+);
+
+export const commentPostThunk = createAsyncThunk(
+    'posts/comment',
+    async ({ postId, description }) => {
+        const postResponse = await commentPost(postId, description);
+        if (!postResponse.ok) {
+            throw new Error(postResponse.error);
+        }
+        postResponse.comment.postId = postId;
+        return postResponse.comment;
     }
 );
 
@@ -128,6 +140,17 @@ export const postsSlice = createSlice({
                 post.likes = post.likes.filter(p => p !== action.payload.userId);
             })
             .addCase(dislikePostThunk.rejected, (state, action) => {
+                state.status = 'error';
+                state.error = action.error.message || '';
+            });
+
+        builder
+            .addCase(commentPostThunk.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                const post = state.posts.find(p => p._id === action.payload.postId);
+                post.comments.push(action.payload);
+            })
+            .addCase(commentPostThunk.rejected, (state, action) => {
                 state.status = 'error';
                 state.error = action.error.message || '';
             });

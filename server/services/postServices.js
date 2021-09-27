@@ -1,7 +1,8 @@
 const Post = require('../models/Post');
+const Comment = require('../models/Comment');
 
 const getPosts = async () => {
-    return await Post.find({});
+    return await Post.find({}).populate('comments');
 };
 
 const createPost = async (content, imageUrl, owner) => {
@@ -39,10 +40,26 @@ const dislikePost = async (postId, userId) => {
     return post;
 };
 
+const commentPost = async (postId, user, description) => {
+    const post = await Post.findById(postId);
+    const comment = new Comment({
+        description,
+        owner: user,
+        iat: Date.now()
+    });
+
+    post.comments.push(comment);
+    await comment.save();
+    await post.save();
+
+    return comment;
+};
+
 module.exports = {
     createPost,
     getPosts,
     deletePost,
     likePost,
     dislikePost,
+    commentPost,
 };

@@ -37,6 +37,7 @@ router.delete('/:postId', async (req, res) => {
     }
 });
 
+// likes
 router.post('/:postId/like', async (req, res) => {
     try {
         const postId = req.params.postId;
@@ -56,6 +57,25 @@ router.post('/:postId/dislike', async (req, res) => {
         const post = await req.data.dislikePost(postId, userId);
 
         res.status(201).json({ ok: true, post });
+    } catch (err) {
+        res.status(400).json({ ok: false, error: err.message });
+    }
+});
+
+// comments
+router.post('/:postId/comment', async (req, res) => {
+    try {
+        const postId = req.params.postId;
+        const user = req.user;
+        const description = req.body.description;
+
+        if(!description) {
+            throw new Error('Comment can\'t be empty!');
+        }
+
+        const comment = await req.data.commentPost(postId, user, description);
+
+        res.status(201).json({ ok: true, comment });
     } catch (err) {
         res.status(400).json({ ok: false, error: err.message });
     }

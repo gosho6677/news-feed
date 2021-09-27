@@ -12,7 +12,8 @@
 - [x] create posts BE/FE
 - [x] delete posts if owner BE/FE
 - [x] like posts BE/FE
-- [ ] add comment section with material ui to posts
-- [ ] comment posts BE/FE
+- [x] add comment section with material ui to posts
+- [x] comment posts BE/FE
+- [ ] delete comment if post owner or comment author
 - [ ] my posts page
 - [ ] try optimizing by normalizing data with createEntityAdapter e.g. as key,value pairs

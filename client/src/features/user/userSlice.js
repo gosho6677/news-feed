@@ -83,5 +83,11 @@ export const selectUserId = state => {
         : undefined;
 };
 
+export const selectUser = state => {
+    return state.user.status === 'succeeded'
+        ? state.user.user
+        : undefined;
+};
+
 export const { removeError, setUserOnLoad } = userSlice.actions;
 export default userSlice.reducer;

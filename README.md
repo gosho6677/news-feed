@@ -15,5 +15,6 @@
 - [x] add comment section with material ui to posts
 - [x] comment posts BE/FE
 - [x] delete comment if post owner or comment author
+- [x] add FE sorting
 - [ ] my posts page
 - [ ] try optimizing by normalizing data with createEntityAdapter e.g. as key,value pairs

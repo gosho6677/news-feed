@@ -1,6 +1,10 @@
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../features/user/userSlice';
+
 const MyProfile = () => {
+    const user = useSelector(selectUser);
     return (
-        <div>jejejeje</div>
+            <div>{user.displayName}</div>
     );
 };
 

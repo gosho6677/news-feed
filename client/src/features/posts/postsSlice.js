@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { commentPost, createPost, deleteComment, deletePost, dislikePost, getPosts, likePost } from './postsAPI';
+import sortHelper from './sortHelper';
 
 const initialState = {
     posts: [],
@@ -91,7 +92,11 @@ export const deleteCommentThunk = createAsyncThunk(
 export const postsSlice = createSlice({
     name: 'posts',
     initialState,
-    reducers: {},
+    reducers: {
+        sortPosts(state, action) {
+            sortHelper[action.payload](state.posts);
+        }
+    },
     extraReducers: builder => {
         builder
             .addCase(getPostsThunk.pending, state => {
@@ -180,4 +185,5 @@ export const postsSlice = createSlice({
     }
 });
 
+export const { sortPosts } = postsSlice.actions;
 export default postsSlice.reducer;

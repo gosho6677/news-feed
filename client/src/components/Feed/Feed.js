@@ -1,5 +1,3 @@
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 
 import Profile from './Profile';
@@ -11,6 +9,7 @@ import { useEffect } from 'react';
 import LoadingBar from '../LoadingBar/LoadingBar';
 import ErrorBox from '../Notifications/ErrorBox';
 import { removeError } from '../../features/user/userSlice';
+import SortBy from './SortBy';
 
 const Feed = () => {
     const posts = useSelector(state => state.posts.posts);
@@ -19,24 +18,21 @@ const Feed = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if(status === 'idle') {
+        if (status === 'idle') {
             dispatch(getPostsThunk());
         }
     }, [dispatch, status]);
 
-    if(status === 'loading') {
+    if (status === 'loading') {
         return <LoadingBar />;
     }
 
     return (
         <Container component="main" className="feed">
+            {error && <ErrorBox error={error} removeError={removeError} />}
             <Profile />
             <News posts={posts} />
-            {/* todo: throw it in its own component */}
-            <Box component="aside" className="events">
-                <Typography paragraph>adsdsads</Typography>
-                {error && <ErrorBox error={error} removeError={removeError} />}
-            </Box>
+            <SortBy />
         </Container>
     );
 };

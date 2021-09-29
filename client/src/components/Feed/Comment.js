@@ -2,8 +2,18 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 
-const Comment = ({ comment }) => {
+import { useDispatch } from 'react-redux';
+import { deleteCommentThunk } from '../../features/posts/postsSlice';
+
+const Comment = ({ comment, isPostOwner, isCommentOwner, postId }) => {
+    const dispatch = useDispatch();
+
+    const deleteCommentHandler = () => {
+        dispatch(deleteCommentThunk({ postId, commentId: comment._id }));
+    };
+
     return (
         <Grid item sx={{ m: '.2rem 0', p: '.5rem' }}>
             <Stack direction="row">
@@ -27,6 +37,7 @@ const Comment = ({ comment }) => {
                         {comment?.description}
                     </Typography>
                 </Stack>
+                {(isPostOwner || isCommentOwner) && <Button onClick={deleteCommentHandler} variant="text" sx={{ color: 'gray' }}>Delete</Button>}
             </Stack>
         </Grid>);
 };

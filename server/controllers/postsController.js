@@ -81,4 +81,15 @@ router.post('/:postId/comment', async (req, res) => {
     }
 });
 
+router.delete('/:postId/comment/:commentId', async (req, res) => {
+    try {
+        const postId = req.params.postId;
+        const commentId = req.params.commentId;
+
+        await req.data.deleteComment(postId, commentId);
+        res.status(201).json({ ok: true, resp: { postId, commentId } });
+    } catch (err) {
+        res.status(400).json({ ok: false, error: err.message });
+    }
+});
 module.exports = router;

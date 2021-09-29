@@ -55,6 +55,16 @@ const commentPost = async (postId, user, description) => {
     return comment;
 };
 
+const deleteComment = async (postId, commentId) => {
+    const post = await Post.findById(postId);
+    
+    const idxOfComment = post.comments.indexOf(commentId);
+    post.comments.splice(idxOfComment, 1);
+
+    await post.save();
+    await Comment.findByIdAndDelete(commentId);
+};
+
 module.exports = {
     createPost,
     getPosts,
@@ -62,4 +72,5 @@ module.exports = {
     likePost,
     dislikePost,
     commentPost,
+    deleteComment,
 };

@@ -70,3 +70,15 @@ export const commentPost = async (postId, description) => {
 
     return await resp.json();
 };
+
+export const deleteComment = async (postId, commentId) => {
+    const resp = await fetch(`${baseUrl}/${postId}/comment/${commentId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': await firebase.getToken()
+        }
+    });
+
+    return await resp.json();
+};

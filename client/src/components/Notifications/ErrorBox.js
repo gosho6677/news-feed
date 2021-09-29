@@ -5,16 +5,16 @@ import './ErrorBox.css';
 const ErrorBox = ({ error, removeError }) => {
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        const timeOut = setTimeout(() => {
-            dispatch(removeError());
-        }, 10000);
+    // useEffect(() => {
+    //     const timeOut = setTimeout(() => {
+    //         dispatch(removeError());
+    //     }, 10000);
 
-        return () => {
-            dispatch(removeError());
-            clearTimeout(timeOut);
-        };
-    }, [removeError, dispatch]);
+    //     return () => {
+    //         dispatch(removeError());
+    //         clearTimeout(timeOut);
+    //     };
+    // }, [removeError, dispatch]);
 
     const errorHandler = () => {
         dispatch(removeError());

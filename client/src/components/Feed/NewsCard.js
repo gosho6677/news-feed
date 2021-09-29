@@ -21,6 +21,7 @@ const NewsCard = ({ post, userId }) => {
     const [dislikeDisabled, setDislikeDisabled] = useState(false);
     const [display, setDisplay] = useState('none');
     const hasLiked = post.likes.includes(userId);
+    const isPostOwner = post.owner._id === userId;
 
     return (
         <Grid className="news-card" item>
@@ -35,7 +36,7 @@ const NewsCard = ({ post, userId }) => {
                     </Avatar>
                 </Typography>
                 <Typography paragraph>{post.owner.displayName}</Typography>
-                {post.owner._id === userId &&
+                {isPostOwner &&
                     <Tooltip title="Delete" sx={{ position: 'relative', left: '70%', bottom: '5px' }}>
                         <IconButton data-id={post._id}>
                             <HighlightOffIcon fontSize="large" />
@@ -89,8 +90,17 @@ const NewsCard = ({ post, userId }) => {
             </Stack>
             <Grid display={display} sx={{ mt: '1rem' }} container>
                 <AddComment postId={post._id} />
-                {post.comments.length 
-                    ? post.comments.map(c => <Comment key={c._id} comment={c} />)
+                {post.comments.length
+                    ? post.comments
+                        .map(c => (
+                            <Comment
+                                key={c._id}
+                                comment={c}
+                                isCommentOwner={c.owner._id === userId}
+                                isPostOwner={isPostOwner}
+                                postId={post._id}
+                            />
+                        ))
                     : <Typography variant="h5">No comments yet...</Typography>}
             </Grid>
         </Grid>

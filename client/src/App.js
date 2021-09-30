@@ -8,7 +8,6 @@ import { useEffect } from 'react';
 import { auth } from './firebase';
 import { useDispatch, useSelector } from 'react-redux';
 
-import MyProfile from './components/MyProfile/MyProfile';
 import Feed from './components/Feed/Feed';
 import Navigation from './components/Navigation/Navigation';
 import Login from './components/Login/Login';
@@ -40,7 +39,6 @@ const App = () => {
             <Navigation />
             <Switch>
                 <Route path='/' exact component={isGuest(Feed)} />
-                <Route path='/profile' exact component={isGuest(MyProfile)} />
                 <Route path='/auth/login' exact component={Login} />
                 <Route path='/auth/register' exact component={Register} />
                 <Route path='/test' exact component={Counter} />

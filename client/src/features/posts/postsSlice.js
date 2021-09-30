@@ -185,5 +185,11 @@ export const postsSlice = createSlice({
     }
 });
 
+export const selectMyPosts = state => {
+    return state.posts.status === 'succeeded' && state.user.status === 'succeeded'
+        ? state.posts.posts.filter(p => p.owner._id === state.user.user._id)
+        : undefined;
+};
+
 export const { sortPosts } = postsSlice.actions;
 export default postsSlice.reducer;

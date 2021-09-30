@@ -1,4 +1,6 @@
 import Typography from '@mui/material/Typography';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -7,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { sortPosts } from '../../features/posts/postsSlice';
 
-const SortBy = () => {
+const SortBy = ({ postsCriteria, setPostsCriteria }) => {
     const [sortCriteria, setSortCriteria] = useState('recent');
     const dispatch = useDispatch();
 
@@ -16,14 +18,17 @@ const SortBy = () => {
     }, [sortCriteria, dispatch]);
 
     const sortCriteriaHandler = e => {
-        console.log(e.target.value);
         setSortCriteria(e.target.value);
     };
 
+    const showPostsCriteriaHandler = (e) => {
+        setPostsCriteria(e.target.value);
+    };
+
     return (
-        <Box component="aside" className="events">
+        <Box component="aside" sx={{ width: '180px' }}>
             <Typography paragraph>Sort by:</Typography>
-            <FormControl sx={{ width: '180px'}}>
+            <FormControl sx={{ width: "100%" }}>
                 <Select
                     id="demo-simple-select"
                     value={sortCriteria}
@@ -36,6 +41,16 @@ const SortBy = () => {
                     <MenuItem value="most-commented">Most commented</MenuItem>
                 </Select>
             </FormControl>
+
+            <ToggleButtonGroup
+                color="primary"
+                value={postsCriteria}
+                exclusive
+                onChange={showPostsCriteriaHandler}
+            >
+                <ToggleButton value="my-posts">My posts</ToggleButton>
+                <ToggleButton value="all-posts">All posts</ToggleButton>
+            </ToggleButtonGroup>
         </Box>
     );
 };

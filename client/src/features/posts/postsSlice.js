@@ -22,6 +22,14 @@ export const getPostsThunk = createAsyncThunk(
 export const createPostThunk = createAsyncThunk(
     'posts/create',
     async (postInfo) => {
+        if(postInfo.content.length < 10) {
+            throw new Error('Status content must be atleast 10 characters.');
+        }
+
+        if(!postInfo.imageUrl.startsWith('https://')) {
+            throw new Error('Image must be a valid image url! e.g. https://picture.com');
+        }
+
         const post = await createPost(postInfo);
         if (!post.ok) {
             throw new Error(post.error);
@@ -93,6 +101,10 @@ export const postsSlice = createSlice({
     name: 'posts',
     initialState,
     reducers: {
+        removePostError(state) {
+            state.status = state.posts.length ? 'succeeded' : 'idle';
+            state.error = '';
+        },
         sortPosts(state, action) {
             sortHelper[action.payload](state.posts);
         }
@@ -191,5 +203,5 @@ export const selectMyPosts = state => {
         : undefined;
 };
 
-export const { sortPosts } = postsSlice.actions;
+export const { removePostError, sortPosts } = postsSlice.actions;
 export default postsSlice.reducer;

@@ -43,7 +43,6 @@ const AddComment = ({ postId }) => {
                 <Button
                     type="submit"
                     variant="contained"
-                    sx={{ backgroundColor: '#94999b' }}
                 >
                     Comment
                 </Button>

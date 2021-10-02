@@ -2,7 +2,7 @@ import { Container, Box, Paper, Avatar, Typography, TextField, Button, Grid } fr
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser, removeError } from "../../features/user/userSlice";
+import { loginUser } from "../../features/user/userSlice";
 import ErrorBox from "../Notifications/ErrorBox";
 
 const Login = () => {
@@ -22,7 +22,7 @@ const Login = () => {
 
     return (
         <Container component="main" sx={{ width: "50%" }}>
-            {status === "error" && <ErrorBox error={error} removeError={removeError} />}
+            {status === "error" && <ErrorBox error={error} />}
             <Paper elevation={6} sx={{
                 display: "flex",
                 justifyContent: "center",

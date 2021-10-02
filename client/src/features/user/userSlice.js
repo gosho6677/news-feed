@@ -10,6 +10,14 @@ const initialState = {
 export const registerUser = createAsyncThunk(
     'user/register',
     async (userDetails) => {
+        let { email, name, password, rePass, photoUrl } = userDetails;
+        if (!email || !name || !password || !rePass || !photoUrl) {
+            throw new Error('All fields are required!');
+        }
+        if(password !== rePass) {
+            throw new Error('Passwords must match!');
+        }
+
         const user = await register(userDetails);
         return user;
     }
@@ -18,6 +26,10 @@ export const registerUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
     'user/login',
     async (userDetails) => {
+        if(!userDetails?.email || !userDetails?.password) {
+            throw new Error('All fields are required!');
+        }
+
         const user = await login(userDetails);
         return user;
     }
@@ -35,8 +47,8 @@ export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        removeError: state => {
-            state.status = 'idle';
+        removeUserError: state => {
+            state.status = state.user !== null ? 'succeeded' : 'idle'; 
             state.error = '';
         }
     },
@@ -89,5 +101,5 @@ export const selectUser = state => {
         : undefined;
 };
 
-export const { removeError, setUserOnLoad } = userSlice.actions;
+export const { removeUserError, setUserOnLoad } = userSlice.actions;
 export default userSlice.reducer;

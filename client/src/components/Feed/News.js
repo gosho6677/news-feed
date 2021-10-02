@@ -28,6 +28,8 @@ const News = ({ posts }) => {
         } else if (tag === 'BUTTON' && val === 'Dislike') {
             postId = e.target.parentElement.dataset.id;
             dispatch(dislikePostThunk({ postId, userId }));
+        } else {
+            return;
         }
     };
 

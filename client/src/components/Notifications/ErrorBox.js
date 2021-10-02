@@ -1,10 +1,11 @@
-// import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { removePostError } from '../../features/posts/postsSlice';
+import { removeUserError } from '../../features/user/userSlice';
 import './ErrorBox.css';
 
-const ErrorBox = ({ error, removeError }) => {
+const ErrorBox = ({ error }) => {
     const dispatch = useDispatch();
-
+    
     // useEffect(() => {
     //     const timeOut = setTimeout(() => {
     //         dispatch(removeError());
@@ -17,7 +18,8 @@ const ErrorBox = ({ error, removeError }) => {
     // }, [removeError, dispatch]);
 
     const errorHandler = () => {
-        dispatch(removeError());
+        dispatch(removeUserError());
+        dispatch(removePostError());
     };
 
     return (

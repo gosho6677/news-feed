@@ -3,7 +3,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import ErrorBox from "../Notifications/ErrorBox";
-import { registerUser, removeError } from "../../features/user/userSlice";
+import { registerUser } from "../../features/user/userSlice";
 
 const Register = () => {
     const status = useSelector(state => state.user.status);
@@ -30,7 +30,7 @@ const Register = () => {
 
     return (
         <Container component="main" sx={{ width: "50%" }}>
-            {status === 'error' && <ErrorBox error={error} removeError={removeError} />}
+            {status === 'error' && <ErrorBox error={error} />}
             <Paper elevation={6} sx={{
                 display: 'flex',
                 justifyContent: 'center',

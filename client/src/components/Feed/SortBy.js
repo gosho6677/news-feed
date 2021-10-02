@@ -26,8 +26,8 @@ const SortBy = ({ postsCriteria, setPostsCriteria }) => {
     };
 
     return (
-        <Box component="aside" sx={{ width: '180px' }}>
-            <Typography paragraph>Sort by:</Typography>
+        <Box component="aside">
+            <Typography paragraph sx={{ m: 0, mt: 1}}>Sort by:</Typography>
             <FormControl sx={{ width: "100%" }}>
                 <Select
                     id="demo-simple-select"

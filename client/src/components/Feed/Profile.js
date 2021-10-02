@@ -3,18 +3,28 @@ import Card from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
 import CreateIcon from '@mui/icons-material/Create';
-import { useSelector } from "react-redux";
-import LoadingBar from "../LoadingBar/LoadingBar";
+import RefreshIcon from '@mui/icons-material/Refresh';
 
-const Profile = () => {
+import { useDispatch, useSelector } from "react-redux";
+import LoadingBar from "../LoadingBar/LoadingBar";
+import { getPostsThunk } from '../../features/posts/postsSlice';
+import SortBy from './SortBy';
+
+const Profile = ({ postsCriteria, setPostsCriteria }) => {
     const user = useSelector(state => state.user.user);
     const status = useSelector(state => state.user.status);
+    const dispatch = useDispatch();
 
     if (status === 'loading') {
         return <LoadingBar />;
     }
+
+    const refetchPostsHandler = e => {
+        dispatch(getPostsThunk());
+    };
 
     return (
         <Box component="aside" className="profile">
@@ -42,6 +52,8 @@ const Profile = () => {
                     </Typography>
                 </div>
             </Card>
+            <Button onClick={refetchPostsHandler} variant="contained">Refresh posts<RefreshIcon /></Button>
+            <SortBy postsCriteria={postsCriteria} setPostsCriteria={setPostsCriteria} />
         </Box>
     );
 };

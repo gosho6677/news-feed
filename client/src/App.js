@@ -42,6 +42,7 @@ const App = () => {
                 <Route path='/auth/login' exact component={Login} />
                 <Route path='/auth/register' exact component={Register} />
                 <Route path='/test' exact component={Counter} />
+                <Route path='*' render={() => <h1 style={{textAlign: 'center'}}>Page not found...</h1>} />
             </Switch>
         </StyledEngineProvider>
     );

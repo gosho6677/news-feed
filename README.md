@@ -16,7 +16,7 @@ The frontend is hosted on Firebase, the backend is on Heroku and the data
 # Feed page
 ![feed](https://www.dropbox.com/s/y42qwecdkmzb09e/news-feed-page.png?raw=1)
 
-# System design
+# App workflow
 Login flow:  
 ![login](https://www.dropbox.com/s/rkf0x634mv7fg0n/Login%20Diagram.jpg?raw=1)  
 Basic app flow with redux and express:  

@@ -17,10 +17,10 @@ The frontend is hosted on Firebase, the backend is on Heroku and the data
 ![feed](https://www.dropbox.com/s/y42qwecdkmzb09e/news-feed-page.png?raw=1)
 
 # System design
-Login flow:
-![login](https://www.dropbox.com/s/3idp6m3gof6ko3k/Untitled%20Diagram.drawio.svg?raw=1)
-Basic app flow with redux and express:
-![app flow](https://www.dropbox.com/s/znpbj12yw6z1c64/App%20flow.drawio.svg?raw=1)
+Login flow:  
+![login](https://www.dropbox.com/s/rkf0x634mv7fg0n/Login%20Diagram.jpg?raw=1)  
+Basic app flow with redux and express:  
+![app flow](https://www.dropbox.com/s/chtotoioapgtn7n/App%20flow.jpg?raw=1)
 
 # TODO List
 - [x] Login page

@@ -4,7 +4,7 @@ import Profile from './Profile';
 import News from './News';
 import './Feed.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPostsThunk, selectMyPosts } from '../../features/posts/postsSlice';
+import { getPostsThunk, selectAllPosts, selectMyPosts } from '../../features/posts/postsSlice';
 import { useEffect, useState } from 'react';
 import LoadingBar from '../LoadingBar/LoadingBar';
 import ErrorBox from '../Notifications/ErrorBox';
@@ -12,7 +12,7 @@ import ErrorBox from '../Notifications/ErrorBox';
 const Feed = () => {
     // changed by the user preference of all posts or only user posts
     const [postsCriteria, setPostsCriteria] = useState('all-posts');
-    const posts = useSelector(state => state.posts.posts);
+    const posts = useSelector(selectAllPosts);
     const myPosts = useSelector(selectMyPosts);
     const status = useSelector(state => state.posts.status);
     const error = useSelector(state => state.posts.error);

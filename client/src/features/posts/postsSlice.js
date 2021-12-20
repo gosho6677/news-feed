@@ -1,12 +1,16 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { commentPost, createPost, deleteComment, deletePost, dislikePost, getPosts, likePost } from './postsAPI';
 import sortHelper from './sortHelper';
 
-const initialState = {
-    posts: [],
+const postsAdapter = createEntityAdapter({
+    selectId: post => post._id,
+    sortComparer: (a, b) => b.iat - a.iat
+});
+
+const initialState = postsAdapter.getInitialState({
     status: 'idle',
     error: '',
-};
+});
 
 export const getPostsThunk = createAsyncThunk(
     'posts/getAll',
@@ -22,11 +26,11 @@ export const getPostsThunk = createAsyncThunk(
 export const createPostThunk = createAsyncThunk(
     'posts/create',
     async (postInfo) => {
-        if(postInfo.content.length < 10) {
+        if (postInfo.content.length < 10) {
             throw new Error('Status content must be atleast 10 characters.');
         }
 
-        if(!postInfo.imageUrl.startsWith('https://')) {
+        if (!postInfo.imageUrl.startsWith('https://')) {
             throw new Error('Image must be a valid image url! e.g. https://picture.com');
         }
 
@@ -87,7 +91,7 @@ export const commentPostThunk = createAsyncThunk(
 
 export const deleteCommentThunk = createAsyncThunk(
     '/posts/deleteComment',
-    async ({ postId, commentId}) => {
+    async ({ postId, commentId }) => {
         const postResponse = await deleteComment(postId, commentId);
         if (!postResponse.ok) {
             throw new Error(postResponse.error);
@@ -101,12 +105,40 @@ export const postsSlice = createSlice({
     name: 'posts',
     initialState,
     reducers: {
+        createPostSync(state, action) {
+            postsAdapter.addOne(state, action.payload);
+        },
+        deletePostSync(state, action) {
+            postsAdapter.removeOne(state, action.payload);
+        },
+        likePostSync(state, action) {
+            const post = state.entities[action.payload.postId];
+            if (!post.likes.includes(action.payload.userId)) {
+                post.likes.push(action.payload.userId);
+            }
+        },
+        dislikePostSync(state, action) {
+            const post = state.entities[action.payload.postId];
+            post.likes = post.likes.filter(id => id !== action.payload.userId);
+        },
+        commentPostSync(state, action) {
+            const post = state.entities[action.payload.postId];
+            let hasComment = post.comments.find(c => c._id === action.payload.comment._id);
+
+            if (!hasComment) {
+                post.comments.push(action.payload.comment);
+            }
+        },
+        deleteCommentSync(state, action) {
+            const post = state.entities[action.payload.postId];
+            post.comments = post.comments.filter(c => c._id !== action.payload.commentId);
+        },
         removePostError(state) {
-            state.status = state.posts.length ? 'succeeded' : 'idle';
+            state.status = state.ids.length ? 'succeeded' : 'idle';
             state.error = '';
         },
         sortPosts(state, action) {
-            sortHelper[action.payload](state.posts);
+            sortHelper[action.payload](state.ids, state.entities);
         }
     },
     extraReducers: builder => {
@@ -116,8 +148,9 @@ export const postsSlice = createSlice({
             })
             .addCase(getPostsThunk.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                state.posts = action.payload.posts;
-                state.posts.sort((a, b) => b.iat - a.iat);
+                postsAdapter.setAll(state, action.payload.posts);
+                // state.posts = action.payload.posts;
+                // state.posts.sort((a, b) => b.iat - a.iat);
             })
             .addCase(getPostsThunk.rejected, (state, action) => {
                 state.status = 'error';
@@ -130,8 +163,9 @@ export const postsSlice = createSlice({
             })
             .addCase(createPostThunk.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                state.posts.push(action.payload.post);
-                state.posts.sort((a, b) => b.iat - a.iat);
+                postsAdapter.addOne(state, action.payload.post);
+                // state.posts.push(action.payload.post);
+                // state.posts.sort((a, b) => b.iat - a.iat);
             })
             .addCase(createPostThunk.rejected, (state, action) => {
                 state.status = 'error';
@@ -144,7 +178,8 @@ export const postsSlice = createSlice({
             })
             .addCase(deletePostThunk.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                state.posts = state.posts.filter(p => p._id !== action.payload);
+                postsAdapter.removeOne(state, action.payload);
+                // state.posts = state.posts.filter(p => p._id !== action.payload);
             })
             .addCase(deletePostThunk.rejected, (state, action) => {
                 state.status = 'error';
@@ -154,8 +189,11 @@ export const postsSlice = createSlice({
         builder
             .addCase(likePostThunk.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                const post = state.posts.find(p => p._id === action.payload._id);
-                post.likes.push(action.payload.userId);
+                // const post = state.posts.find(p => p._id === action.payload._id);
+                const post = state.entities[action.payload._id];
+                if (!post.likes.includes(action.payload.userId)) {
+                    post.likes.push(action.payload.userId);
+                }
             })
             .addCase(likePostThunk.rejected, (state, action) => {
                 state.status = 'error';
@@ -165,7 +203,8 @@ export const postsSlice = createSlice({
         builder
             .addCase(dislikePostThunk.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                const post = state.posts.find(p => p._id === action.payload._id);
+                // const post = state.posts.find(p => p._id === action.payload._id);
+                const post = state.entities[action.payload._id];
                 post.likes = post.likes.filter(p => p !== action.payload.userId);
             })
             .addCase(dislikePostThunk.rejected, (state, action) => {
@@ -176,8 +215,12 @@ export const postsSlice = createSlice({
         builder
             .addCase(commentPostThunk.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                const post = state.posts.find(p => p._id === action.payload.postId);
-                post.comments.push(action.payload);
+                const post = state.entities[action.payload.postId];
+                let hasComment = post.comments.find(c => c._id === action.payload._id);
+
+                if (!hasComment) {
+                    post.comments.push(action.payload);
+                }
             })
             .addCase(commentPostThunk.rejected, (state, action) => {
                 state.status = 'error';
@@ -187,7 +230,7 @@ export const postsSlice = createSlice({
         builder
             .addCase(deleteCommentThunk.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                const post = state.posts.find(p => p._id === action.payload.postId);
+                const post = state.entities[action.payload.postId];
                 post.comments = post.comments.filter(c => c._id !== action.payload.commentId);
             })
             .addCase(deleteCommentThunk.rejected, (state, action) => {
@@ -199,9 +242,21 @@ export const postsSlice = createSlice({
 
 export const selectMyPosts = state => {
     return state.posts.status === 'succeeded' && state.user.status === 'succeeded'
-        ? state.posts.posts.filter(p => p.owner._id === state.user.user._id)
+        ? state.posts.ids.filter(id => state.posts.entities[id].owner._id === state.user.user._id)
         : undefined;
 };
 
-export const { removePostError, sortPosts } = postsSlice.actions;
+export const {
+    selectAll: selectAllPosts
+} = postsAdapter.getSelectors(state => state.posts);
+export const {
+    createPostSync,
+    deletePostSync,
+    likePostSync,
+    dislikePostSync,
+    commentPostSync,
+    deleteCommentSync,
+    removePostError,
+    sortPosts,
+} = postsSlice.actions;
 export default postsSlice.reducer;

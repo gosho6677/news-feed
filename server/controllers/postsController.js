@@ -1,8 +1,10 @@
 const router = require('express').Router();
+const { io } = require('../socket');
 
 router.get('/', async (req, res) => {
     try {
         const posts = await req.data.getPosts();
+
         res.json({ ok: true, posts });
     } catch (err) {
         res.status(500).json({ ok: false, error: 'Internal error.' });
@@ -20,6 +22,8 @@ router.post('/', async (req, res) => {
         }
 
         const post = await req.data.createPost(content, imageUrl, user);
+
+        io.emit('post/add', post);
         res.status(201).json({ ok: true, post });
     } catch (err) {
         res.status(400).json({ ok: false, error: err.message });
@@ -31,6 +35,7 @@ router.delete('/:postId', async (req, res) => {
         const postId = req.params.postId;
         await req.data.deletePost(postId);
 
+        io.emit('post/delete', postId);
         res.status(201).json({ ok: true, _id: postId });
     } catch (err) {
         res.status(400).json({ ok: false, error: err.message });
@@ -43,7 +48,8 @@ router.post('/:postId/like', async (req, res) => {
         const postId = req.params.postId;
         const userId = req.user._id;
         const post = await req.data.likePost(postId, userId);
-
+        
+        io.emit('post/like-add', { userId, postId });
         res.status(201).json({ ok: true, post });
     } catch (err) {
         res.status(400).json({ ok: false, error: err.message });
@@ -56,6 +62,7 @@ router.post('/:postId/dislike', async (req, res) => {
         const userId = req.user._id;
         const post = await req.data.dislikePost(postId, userId);
 
+        io.emit('post/like-delete', { userId, postId });
         res.status(201).json({ ok: true, post });
     } catch (err) {
         res.status(400).json({ ok: false, error: err.message });
@@ -69,12 +76,13 @@ router.post('/:postId/comment', async (req, res) => {
         const user = req.user;
         const description = req.body.description;
 
-        if(!description) {
+        if (!description) {
             throw new Error('Comment can\'t be empty!');
         }
 
         const comment = await req.data.commentPost(postId, user, description);
 
+        io.emit('post/comment-add', { comment, postId });
         res.status(201).json({ ok: true, comment });
     } catch (err) {
         res.status(400).json({ ok: false, error: err.message });
@@ -87,9 +95,12 @@ router.delete('/:postId/comment/:commentId', async (req, res) => {
         const commentId = req.params.commentId;
 
         await req.data.deleteComment(postId, commentId);
+
+        io.emit('post/comment-delete', { postId, commentId });
         res.status(201).json({ ok: true, resp: { postId, commentId } });
     } catch (err) {
         res.status(400).json({ ok: false, error: err.message });
     }
 });
+
 module.exports = router;

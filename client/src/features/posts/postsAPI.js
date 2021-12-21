@@ -1,7 +1,7 @@
 import firebase from "../../firebase";
 
-const baseUrl = 'http://localhost:5000/posts';
-// const baseUrl = 'https://tranquil-taiga-19255.herokuapp.com/posts';
+// const baseUrl = 'http://localhost:5000/posts';
+const baseUrl = 'https://tranquil-taiga-19255.herokuapp.com/posts';
 
 export const getPosts = async () => {
     const resp = await fetch(baseUrl, {

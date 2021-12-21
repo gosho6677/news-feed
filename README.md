@@ -1,5 +1,5 @@
 # News feed - social posts
-This is an app I've built which allows users to publish, like and comment posts of others. It isn't build with bi-directional communication channel between the client and the server like a usual social media app should be.  
+This is an app I've built which allows users to publish, like and comment posts of others. It is build with bi-directional communication with websockets (socket.io).
 The backend won't run if the project is cloned on another machine, because of Firebase and its requirement for a service account for the admin sdk for node JS and it will require more time to set up, so please check the demo below.
 
 # Technologies
